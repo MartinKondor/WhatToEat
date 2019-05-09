@@ -1,10 +1,16 @@
 import json
 import numpy as np
 from pandas import read_csv
-from src.utils import (
-    preprocess_text,
-    is_matching_with_preference
-)
+try:
+    from src.utils import (
+        preprocess_text,
+        is_matching_with_preference
+    )
+except ImportError:
+    from utils import (
+        preprocess_text,
+        is_matching_with_preference
+    )
 
 
 class Cook(object):
