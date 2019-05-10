@@ -1,4 +1,5 @@
 import json
+import random
 import numpy as np
 from pandas import read_csv
 try:
@@ -51,7 +52,15 @@ class Cook(object):
         """
         preprocessed_ingredients = np.array([preprocess_text(ingredient) for ingredient in ingredients])
         found_recipes = {}
-
+        
+        if ingredients == []:
+            for i in range(search_limit):
+                random_coice = random.choice(self.recipes)
+                found_recipes[random_coice["title"]] = random_coice
+    
+            return found_recipes
+            
+                
         for i in range(len(self.recipes)):
             try:
                 recipe_ingredients = self.recipes[i]["ingredients"]

@@ -1,24 +1,34 @@
-<!doctype html>
-<html class="no-js" lang="">
+{% extends 'layout.html' %}
 
-<head>
-  <meta charset="utf-8">
-  <title>What To Eat?</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block styles %}{% endblock %}
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
+{% block content %}
+<div class="row">
+    <div class="col-sm text-center">
+        <form action="/cook" method="POST">
+            <p class="h3 mt-3">What food do you want to eat or what do you have?</p>
+            <ul id="ingredients-list" style="list-style: none;">
+                <li><input name="ingredient-1" type="text" class="form-control" placeholder="Type in an ingredient ..."></li>
+            </ul>
+            <button id="add-ingredient-button" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Add ingredient</button>
 
-  <meta name="theme-color" content="#fafafa">
-</head>
+            <p class="h3 mt-3">What kind of food do you want?</p>
+            <input class="mt-1 mb-1" name="vegan" type="checkbox"><span> Vegan </span>
+            <br>
+            <input class="mt-1 mb-1" name="vegetarian" type="checkbox"><span> Vegetarian </span>
+            <br>
+            <input class="mt-1 mb-1" name="sugar-free" type="checkbox"><span> Sugar free </span>
+            <br>
+            <input class="mt-1 mb-1" name="lactose-free" type="checkbox"><span> Lactose free </span>
+            <br>
+            <input class="form-control mt-1 mb-1" name="alcohol-free" type="checkbox" checked><span> Alcohol free </span>
 
-<body>
-  <!--[if IE]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
-
-  <h1>...</h1>
-
-</body>
-</html>
+            <button type="submit" class="btn btn-primary btn-block mt-1 mb-1"><i class="far fa-thumbs-up"></i> Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+  
+{% block scripts %}
+<script src="{{ url_for('static', filename='scripts/home.js') }}"></script>
+{% endblock %}

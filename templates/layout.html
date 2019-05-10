@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title>What To Eat?</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/bootswatch-materia.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css') }}">
+  {% block styles %}{% endblock %}
+  <meta name="theme-color" content="#fafafa">
+</head>
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">What To Eat?</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02"></div>
+  </nav>
+  <div class="container-fluid pl-3 pr-3 pt-3 pb-3">
+    {% block content %}{% endblock %}
+  </div>
+  <script src="{{ url_for('static', filename='vendor/scripts/modernizr-3.7.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/scripts/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/scripts/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/plugins.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/base.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

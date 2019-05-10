@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+
+{% block styles %}{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="/">
+        <button class="btn btn-info btn-block">
+            <i class="fas fa-arrow-circle-left"></i> Go back
+        </button>
+    </a>
+</div>
+
+{% for recipe in recipes %}
+    <div class="row">
+        <div class="col-sm">
+            <p class="h4 font-weight-bold">{{ recipe }}</p>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm">
+            {% for category in recipes[recipe]["categories"] %}
+                <span style="font-size: 12px;" class="badge badge-secondary">{{ category }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="row mb-1">
+        <div class="col-sm text-muted">
+            Ingredients:
+        </div>
+    </div>
+    
+    <div class="row mb-1">
+        <div class="col-sm">
+            <ul>
+                {% for ingredient in recipes[recipe]["ingredients"] %}
+                    <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".bd-example-modal-xl">Show recipe</button>
+    
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="{{ '-'.join(recipe.lower().split(" ")) }}" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="{{ '-'.join(recipe.lower().split(" ")) }}">{{ recipe }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="row mb-1">
+                <div class="col-sm text-muted">
+                    Ingredients:
+                </div>
+            </div>
+            
+            <div class="row mb-1">
+                <div class="col-sm">
+                    <ul>
+                        {% for ingredient in recipes[recipe]["ingredients"] %}
+                            <li>{{ ingredient }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="row mb-1">
+                <div class="col-sm text-muted">
+                    Directions:
+                </div>
+            </div>
+            
+            <div class="row mb-1">
+                <div class="col-sm">
+                    <ul>
+                        {% for direction in recipes[recipe]["directions"] %}
+                            <li>{{ direction }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+{% endfor %}
+{% endblock %}
+  
+{% block scripts %}{% endblock %}
