@@ -42,4 +42,5 @@ def cookRoute():
 
 
 if __name__ == "__main__":
-    APP.run(debug=DEBUG, host=HOST, port=PORT)
+    if not os.environ.get("IS_HEROKU", False):
+        APP.run(debug=DEBUG, host=HOST, port=PORT)
