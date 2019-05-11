@@ -1,7 +1,7 @@
 import json
 import random
 import numpy as np
-from pandas import read_csv
+from time import time
 try:
     from src.utils import (
         preprocess_text,
@@ -31,16 +31,9 @@ class Cook(object):
     """
     def __init__(self):
         self.recipes = []
-        self.infos = []
-        self.infos_columns = []
 
         with open("data/full_format_recipes.json", "r") as recipes_file:
             self.recipes = json.load(recipes_file)
-
-        _ = read_csv("data/epi_r.csv")
-        self.infos = _.values
-        self.infos_columns = _.columns
-
 
     def search_with_ingredients(self,
                                 ingredients: list,
@@ -50,6 +43,7 @@ class Cook(object):
         Searching for a food from self.recipes with the given list of ingredients.
         :return: Returns the found recipes in a dict where the title is the key.
         """
+        start_time = time()
         preprocessed_user_ingredients = []
         found_recipes = {}
         
@@ -79,6 +73,9 @@ class Cook(object):
                 recipe_ingredients = self.recipes[i]["ingredients"]
             except KeyError:
                 continue
+
+            if time() - start_time > 4:
+                return self.search_with_ingredients(ingredients[:-1], preferences)
 
             for recipe_ingredient in recipe_ingredients:         
                 preprocessed_recipe_ingredients = np.array(preprocess_text(recipe_ingredient))
