@@ -35,7 +35,6 @@ def cookRoute():
         "lactose-free": request.form.get("lactose-free") == "on",
         "alcohol-free": request.form.get("alcohol-free") == "on"
     }
-
     return render_template("cook.html", **{
         "recipes": COOK.search_with_ingredients(ingredients, user_preferences)
     })
