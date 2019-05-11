@@ -74,7 +74,7 @@ class Cook(object):
             except KeyError:
                 continue
 
-            if time() - start_time > 4:
+            if time() - start_time > 10:
                 return self.search_with_ingredients(ingredients[:-1], preferences)
 
             for recipe_ingredient in recipe_ingredients:         

@@ -10,7 +10,8 @@ def is_lactose_free(ingredients):
             "cheese" in ingredients or\
             "butter" in ingredients or\
             "dairy" in ingredients or\
-            "yogurt" in ingredients)
+            "yogurt" in ingredients or\
+            "buttermilk" in ingredients)
 
 
 def is_sugar_free(ingredients):
@@ -42,12 +43,14 @@ def is_meat_free(ingredients):
             "shrimp" in ingredients or\
             "ham" in ingredients or\
             "crab" in ingredients or\
-            "veal" in ingredients)
+            "veal" in ingredients or\
+            "sausage" in ingredients)
 
 
 def is_vegan(ingredients):
     return is_meat_free(ingredients) and is_lactose_free(ingredients) and\
-        not ("egg" in ingredients)
+        not ("egg" in ingredients or\
+            "eggplant" in ingredients)
 
 
 def is_matching_with_preference(preferences: dict,
