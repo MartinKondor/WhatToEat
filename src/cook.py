@@ -50,17 +50,30 @@ class Cook(object):
         Searching for a food from self.recipes with the given list of ingredients.
         :return: Returns the found recipes in a dict where the title is the key.
         """
-        preprocessed_ingredients = np.array([preprocess_text(ingredient) for ingredient in ingredients])
+        preprocessed_user_ingredients = []
         found_recipes = {}
         
+        # random choice in this case
         if ingredients == []:
             for i in range(search_limit):
-                random_coice = random.choice(self.recipes)
-                found_recipes[random_coice["title"]] = random_coice
-    
+                random_choice = random.choice(self.recipes)
+                preprocessed_ingredients = np.array(preprocess_text(ri) for ri in random_choice["ingredients"])
+
+                while not is_matching_with_preference(preferences, random_choice, preprocessed_ingredients):
+                    random_choice = random.choice(self.recipes)
+                    preprocessed_ingredients = np.array(preprocess_text(ri) for ri in random_choice["ingredients"])
+
+                found_recipes[random_choice["title"]] = random_choice
             return found_recipes
-            
-                
+
+        for ingredient in ingredients:
+            prep = preprocess_text(ingredient)
+            if type(prep) is list:
+                prep = ' '.join(prep)
+            preprocessed_user_ingredients.append(prep)
+
+        preprocessed_user_ingredients = np.array(preprocessed_user_ingredients)
+
         for i in range(len(self.recipes)):
             try:
                 recipe_ingredients = self.recipes[i]["ingredients"]
@@ -70,7 +83,14 @@ class Cook(object):
             for recipe_ingredient in recipe_ingredients:         
                 preprocessed_recipe_ingredients = np.array(preprocess_text(recipe_ingredient))
 
-                if np.any(preprocessed_ingredients == preprocessed_recipe_ingredients) and\
+                is_user_ingredients_found = True
+
+                for user_ingredient in preprocessed_user_ingredients:
+                    if user_ingredient not in preprocessed_recipe_ingredients:
+                        is_user_ingredients_found = False
+                        break
+
+                if is_user_ingredients_found and\
                     is_matching_with_preference(preferences, self.recipes[i], preprocessed_recipe_ingredients):
 
                     # set the title of the recipe as the key

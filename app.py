@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request
 from src.cook import Cook
+from src.utils import check_user_input
 
 
 APP = Flask(__name__)
@@ -22,13 +23,21 @@ def cookRoute():
     for i in range(1, 100):
         ingredient = request.form.get("ingredient-" + str(i))
         
-        if not ingredient:
+        if not check_user_input(ingredient):
             break
             
         ingredients.append(ingredient)
              
+    user_preferences = {
+        "vegan": request.form.get("vegan") == "on",
+        "vegetarian": request.form.get("vegetarian") == "on",
+        "sugar-free": request.form.get("sugar-free") == "on",
+        "lactose-free": request.form.get("lactose-free") == "on",
+        "alcohol-free": request.form.get("alcohol-free") == "on"
+    }
+
     return render_template("cook.html", **{
-        "recipes": COOK.search_with_ingredients(ingredients)
+        "recipes": COOK.search_with_ingredients(ingredients, user_preferences)
     })
 
 
