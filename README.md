@@ -2,7 +2,7 @@
 
 Recommending different recipes with a detailed description, based on what ingredient you would like to eat and what are your preferences.
 
-## Preferences
+## Preferencess
 
 * Lactose free
 * Sugar free
