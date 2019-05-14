@@ -41,14 +41,14 @@
             </ul>
         </div>
     </div>
-    
-    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".{{ '-'.join(recipe.lower().split(" ")) }}">Show recipe</button>
-    
-    <div class="modal fade {{ '-'.join(recipe.lower().split(" ")) }}" tabindex="-1" role="dialog" aria-labelledby="{{ '-'.join(recipe.lower().split(" ")) }}" aria-hidden="true">
+   
+    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".recipe-modal-{{ loop.index }}">Show recipe</button>
+    	
+    <div class="modal fade recipe-modal-{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="{{ loop.index }}" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="{{ '-'.join(recipe.lower().split(" ")) }}">{{ recipe }}</h5>
+            <h5 class="modal-title" id="{{ loop.index }}">{{ recipe }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
