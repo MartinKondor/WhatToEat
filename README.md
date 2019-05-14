@@ -7,8 +7,10 @@ Recommending different recipes with a detailed description, based on what ingred
 * Lactose free
 * Sugar free
 * Alcohol free
+* Gluten free
 * Vegetarian
 * Vegan
+* Kosher
 
 ## License
 

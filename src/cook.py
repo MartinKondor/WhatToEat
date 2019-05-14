@@ -24,68 +24,70 @@ class Cook(object):
         with open("data/full_format_recipes.json", "r") as recipes_file:
             self.recipes = json.load(recipes_file)
 
-    def search_with_ingredients(self, ingredients, preferences={}, search_limit=5):
+    def random_choice(self, preferences, search_limit):
+        found_recipes = {}
+
+        for i in range(search_limit):
+
+            while True:  # choosing random recipes until one is matching with preference
+                random_choice = random.choice(self.recipes)
+
+                try:
+                    preprocessed_ingredients = np.array([preprocess_text(_) for _ in random_choice["ingredients"]])
+                except KeyError:
+                    continue
+
+                if is_matching_with_preference(preferences, random_choice, preprocessed_ingredients):
+                    found_recipes[random_choice["title"]] = random_choice
+                    break
+
+        return found_recipes
+
+    def search_with_ingredients(self, ingredients, preferences={}, search_limit=7):
         """
         Searching for a food from self.recipes with the given list of ingredients.
 
-        :param ingredients: list
+        ## Performance
+        Data: ingredients = ['broccoli'], preferences = {'alcohol-free': true}, search_limit = 7
+        New search speed: 1.293074131011963
+        Old search speed: 1.677095890045166
+
+        :param ingredients: list user input preprocessed
         :param preferences: dict with the user's preferences
         :param search_limit: int how many recipes this function needs to find before stoping
         :return: dict returns the found recipes in a dict where the title is the key.
         """
-        start_time = time.time()  # measure runtime
-        preprocessed_user_ingredients = []
+        if not ingredients:  # random choice in this case
+            return self.random_choice(preferences, search_limit)
+
         found_recipes = {}
-        
-        # random choice in this case
-        if ingredients == []:
-            for i in range(search_limit):
-                random_choice = random.choice(self.recipes)
-                preprocessed_ingredients = np.array(preprocess_text(ri) for ri in random_choice["ingredients"])
+        start_time = time.time()  # measure runtime
 
-                while not is_matching_with_preference(preferences, random_choice, preprocessed_ingredients):
-                    random_choice = random.choice(self.recipes)
-                    preprocessed_ingredients = np.array(preprocess_text(ri) for ri in random_choice["ingredients"])
-
-                found_recipes[random_choice["title"]] = random_choice
-            return found_recipes
-
-        for ingredient in ingredients:
-            prep = preprocess_text(ingredient)
-            if type(prep) is list:
-                prep = ' '.join(prep)
-            preprocessed_user_ingredients.append(prep)
-
-        preprocessed_user_ingredients = np.array(preprocessed_user_ingredients)
-
-        for i in range(len(self.recipes)):
+        for recipe in self.recipes:
             try:
-                recipe_ingredients = self.recipes[i]["ingredients"]
+                if not recipe["ingredients"]:
+                    continue
             except KeyError:
                 continue
 
-            # stop if it takes more than 20 seconds
+            # remove one ingredient if it takes more than X seconds
             if time.time() - start_time > 20:
-                return self.search_with_ingredients(ingredients[:-1], preferences)
+                return self.search_with_ingredients(ingredients[:-1], preferences, search_limit)
 
-            for recipe_ingredient in recipe_ingredients:         
-                preprocessed_recipe_ingredients = np.array(preprocess_text(recipe_ingredient))
+            # flattening matrix to one dimension
+            recipe_ingredients = np.concatenate([preprocess_text(_) for _ in recipe["ingredients"]])
+            is_user_ingredients_found = True
 
-                is_user_ingredients_found = True
+            for user_ingredient in ingredients:
+                if user_ingredient not in recipe_ingredients:
+                    is_user_ingredients_found = False
+                    break
 
-                for user_ingredient in preprocessed_user_ingredients:
-                    if user_ingredient not in preprocessed_recipe_ingredients:
-                        is_user_ingredients_found = False
-                        break
+            if is_user_ingredients_found and is_matching_with_preference(preferences, recipe, recipe_ingredients):
+                found_recipes[recipe["title"]] = recipe
 
-                if is_user_ingredients_found and \
-                   is_matching_with_preference(preferences, self.recipes[i], preprocessed_recipe_ingredients):
-
-                    # set the title of the recipe as the key
-                    found_recipes[self.recipes[i]["title"]] = self.recipes[i]
-
-                    if len(found_recipes.keys()) >= search_limit:
-                        return found_recipes
+            if len(found_recipes.keys()) >= search_limit:
+                break
 
         return found_recipes
 

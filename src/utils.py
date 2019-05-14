@@ -6,7 +6,7 @@ def preprocess_text(text):
     :param text: str
     :return: list
     """
-    return word_tokenize(text.lower())
+    return word_tokenize(text.strip().lower())
 
 
 def is_lactose_free(ingredients):
@@ -21,7 +21,9 @@ def is_lactose_free(ingredients):
                 "yogurt" in ingredients or
                 "buttermilk" in ingredients or
                 "milk/cream" in ingredients or
-                "milk / cream" in ingredients)
+                "milk / cream" in ingredients or
+                "parmesan" in ingredients or
+                "goat cheese" in ingredients)
 
 
 def is_sugar_free(ingredients):
@@ -68,7 +70,10 @@ def is_meat_free(ingredients):
                 "ham" in ingredients or
                 "crab" in ingredients or
                 "veal" in ingredients or
-                "sausage" in ingredients)
+                "sausage" in ingredients or
+                "shellfish" in ingredients or
+                "lobster" in ingredients or
+                "bacon" in ingredients)
 
 
 def is_vegan(ingredients):
@@ -96,7 +101,7 @@ def is_gluten_free(ingredients):
     return "wheat/gluten-free" in ingredients or "gluten-free" in ingredients
 
 
-def is_matching_with_preference(preferences, recipe, preprocessed_recipe_ingredients: list):
+def is_matching_with_preference(preferences, recipe, preprocessed_recipe_ingredients):
     """
     :param preferences: dict with user preferences
     :param recipe: list the recipe we try to match with

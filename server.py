@@ -41,13 +41,18 @@ def cook_route():
         "kosher": request.form.get("kosher") == "on",
     }
 
+    try:
+        search_limit = int(request.form.get("search-limit"))
+    except:
+        search_limit = 7
+
     if DEBUG:
         print()
         print('ingredients:', ingredients)
         print('user_preferences', user_preferences)
         print()
 
-    return render_template("cook.html", recipes=COOK.search_with_ingredients(ingredients, user_preferences))
+    return render_template("cook.html", recipes=COOK.search_with_ingredients(ingredients, user_preferences, search_limit))
 
 
 if __name__ == "__main__":
