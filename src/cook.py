@@ -1,7 +1,7 @@
 import json
+import time
 import random
 import numpy as np
-from time import time
 try:
     from src.utils import (
         preprocess_text,
@@ -15,35 +15,25 @@ except ImportError:
 
 
 class Cook(object):
-    """
-    attr:self.recipes - Containing all the recipes from "data/full_format_recipes.json".
-    
-    attr:self.infos - One i-th element of it is containing all meta information about "self.recipes[i]".
-    
-    attr:self.infos_columns -
-        Column names of "self.infos".
-        Index(['title', 'rating', 'calories', 'protein', 'fat', 'sodium', '#cakeweek',
-            '#wasteless', '22-minute meals', '3-ingredient recipes',
-            ...
-            'yellow squash', 'yogurt', 'yonkers', 'yuca', 'zucchini', 'cookbooks',
-            'leftovers', 'snack', 'snack week', 'turkey'],
-            dtype='object', length=680)
-    """
-    def __init__(self):
-        self.recipes = []
 
+    def __init__(self):
+        """
+        attr:self.recipes - Containing all the recipes from "data/full_format_recipes.json".
+        """
+        self.recipes = []
         with open("data/full_format_recipes.json", "r") as recipes_file:
             self.recipes = json.load(recipes_file)
 
-    def search_with_ingredients(self,
-                                ingredients: list,
-                                preferences: dict={},
-                                search_limit: int=5) -> dict:
+    def search_with_ingredients(self, ingredients, preferences={}, search_limit=5):
         """
         Searching for a food from self.recipes with the given list of ingredients.
-        :return: Returns the found recipes in a dict where the title is the key.
+
+        :param ingredients: list
+        :param preferences: dict with the user's preferences
+        :param search_limit: int how many recipes this function needs to find before stoping
+        :return: dict returns the found recipes in a dict where the title is the key.
         """
-        start_time = time()
+        start_time = time.time()  # measure runtime
         preprocessed_user_ingredients = []
         found_recipes = {}
         
@@ -74,7 +64,8 @@ class Cook(object):
             except KeyError:
                 continue
 
-            if time() - start_time > 10:
+            # stop if it takes more than 20 seconds
+            if time.time() - start_time > 20:
                 return self.search_with_ingredients(ingredients[:-1], preferences)
 
             for recipe_ingredient in recipe_ingredients:         
@@ -87,8 +78,8 @@ class Cook(object):
                         is_user_ingredients_found = False
                         break
 
-                if is_user_ingredients_found and\
-                    is_matching_with_preference(preferences, self.recipes[i], preprocessed_recipe_ingredients):
+                if is_user_ingredients_found and \
+                   is_matching_with_preference(preferences, self.recipes[i], preprocessed_recipe_ingredients):
 
                     # set the title of the recipe as the key
                     found_recipes[self.recipes[i]["title"]] = self.recipes[i]
@@ -100,10 +91,8 @@ class Cook(object):
 
 
 if __name__ == "__main__":
-    from time import time
-
     cook = Cook()
-    start_time = time()
+    start_time = time.time()
 
     ingredients_you_want = [
         "potato",
@@ -118,7 +107,7 @@ if __name__ == "__main__":
 
     found = cook.search_with_ingredients(ingredients_you_want, preferences, search_limit=3)
 
-    print("Search finished in:", time() - start_time)
+    print("Search finished in:", time.time() - start_time)
     print()
     print("Found recipes:")
     

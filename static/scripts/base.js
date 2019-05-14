@@ -1,4 +1,1 @@
-(function ($) {
-
-    
-})(jQuery);
+(function ($) {})(jQuery);

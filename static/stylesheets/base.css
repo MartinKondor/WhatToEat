@@ -89,64 +89,46 @@ textarea {
    Custom styles
    ========================================================================== */
 
+#content {
+    padding-top: 1%;
+    padding-bottom: 5%;
+    padding-left: 27%;
+    padding-right: 27%;
+}
 
+@media only screen and (max-width: 1000px) {
+    #content {
+        padding-bottom: 2% !important;
+        padding-left: 14% !important;
+        padding-right: 14% !important;
+    }
+}
 
- /* ==========================================================================
-   Helper classes
+@media only screen and (max-width: 720px) {
+    #content {
+        padding-top: 1% !important;
+        padding-bottom: 1% !important;
+        padding-left: 1% !important;
+        padding-right: 1% !important;
+    }
+}
+
+/* ==========================================================================
+   Loader
    ========================================================================== */
 
-/*
- * Hide visually and from screen readers
- */
-
-.hidden {
-  display: none !important;
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  animation: spin 2s linear infinite;
 }
 
-/*
-* Hide only visually, but have it available for screen readers:
-* https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
-*
-* 1. For long content, line feeds are not interpreted as spaces and small width
-*    causes content to wrap 1 word per line:
-*    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-*/
-
-.visuallyhidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-  white-space: nowrap; /* 1 */
-}
-
-/*
-* Extends the .visuallyhidden class to allow the element
-* to be focusable when navigated to via the keyboard:
-* https://www.drupal.org/node/897638
-*/
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  width: auto;
-  white-space: inherit;
-}
-
-/*
-* Hide visually and from screen readers, but maintain layout
-*/
-
-.invisible {
-  visibility: hidden;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /*
@@ -171,24 +153,12 @@ textarea {
   clear: both;
 }
 
-
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
-}
-
 @media print,
        (-webkit-min-device-pixel-ratio: 1.25),
        (min-resolution: 1.25dppx),
        (min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
-
 
 /* ==========================================================================
    Print styles.

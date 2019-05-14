@@ -6,27 +6,69 @@
 <div class="row">
     <div class="col-sm text-center">
         <form action="/cook" method="POST">
-            <p class="h3 mt-3">What food component do you want to eat, or what do you have?</p>
+
+            <p class="h3 mb-3">What food component do you want to eat, or what do you have?</p>
+
             <ul id="ingredients-list" style="list-style: none;">
                 <li><input name="ingredient-1" type="text" class="form-control" placeholder="Type in an ingredient ..."></li>
             </ul>
             <button id="add-ingredient-button" class="btn btn-success btn-block"><i class="fas fa-plus-circle"></i> Add ingredient</button>
 
-            <p class="h3 mt-3">What kind of food do you want?</p>
-            <input class="mt-1 mb-1" name="vegan" type="checkbox"><span> Vegan </span>
-            <br>
-            <input class="mt-1 mb-1" name="vegetarian" type="checkbox"><span> Vegetarian </span>
-            <br>
-            <input class="mt-1 mb-1" name="sugar-free" type="checkbox"><span> Sugar free </span>
-            <br>
-            <input class="mt-1 mb-1" name="lactose-free" type="checkbox"><span> Lactose free </span>
-            <br>
-            <input class="mt-1 mb-1" name="alcohol-free" type="checkbox" checked><span> Alcohol free </span>
+            <p class="h3 mt-5 mb-3">What are your preferences?</p>
 
-            <button type="submit" class="btn btn-primary btn-block mt-1 mb-1"><i class="far fa-thumbs-up"></i> Search</button>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="gluten-free" id="gluten-free">
+                <label class="custom-control-label" for="gluten-free">Gluten free</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="sugar-free" id="sugar-free">
+                <label class="custom-control-label" for="sugar-free">Sugar free</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="lactose-free" id="lactose-free">
+                <label class="custom-control-label" for="lactose-free">Lactose free</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="alcohol-free" id="alcohol-free" checked>
+                <label class="custom-control-label" for="alcohol-free">Alcohol free</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="kosher" id="kosher">
+                <label class="custom-control-label" for="kosher">Kosher</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="vegetarian" id="vegetarian">
+                <label class="custom-control-label" for="vegetarian">Vegetarian</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input mt-1 mb-1" name="vegan" id="vegan">
+                <label class="custom-control-label" for="vegan">Vegan</label>
+            </div>
+
+            <button id="search-button" type="submit" class="btn btn-primary btn-block mt-2 mb-1"><i class="far fa-thumbs-up"></i> Search</button>
         </form>
     </div>
 </div>
+
+<div id="loading-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+            Loading.
+            <br>
+            Please wait ...
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div style="margin: 0 auto !important;" class="loader"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
   
 {% block scripts %}
