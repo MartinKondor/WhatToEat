@@ -1,3 +1,6 @@
+"""
+Main file responsible for routing and server logic.
+"""
 import os
 from flask import Flask, render_template, request
 from src.cook import Cook
@@ -7,17 +10,23 @@ from src.utils import check_and_process_user_input
 APP = Flask(__name__)
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("PORT", 5000))
-DEBUG = False if os.environ.get("IS_HEROKU", False) else True
+DEBUG = os.environ.get("IS_HEROKU", False) or False
 COOK = Cook()
 
 
 @APP.route("/")
 def home():
+    """
+    Main route
+    """
     return render_template("home.html")
-    
-    
+
+
 @APP.route("/cook", methods=["POST"])
 def cook_route():
+    """
+    Route for searching and rendering recipes
+    """
     ingredients = []
 
     # max 100 ingredient
@@ -43,18 +52,19 @@ def cook_route():
 
     try:
         search_limit = int(request.form.get("search-limit"))
-    except:
+    except TypeError:
         search_limit = 7
 
     if DEBUG:
         print()
-        print('ingredients:', ingredients)
-        print('user_preferences', user_preferences)
+        print("ingredients:", ingredients)
+        print("user_preferences:", user_preferences)
         print()
 
-    return render_template("cook.html", recipes=COOK.search_with_ingredients(ingredients, user_preferences, search_limit))
+    # searching
+    found_recipes = COOK.search_with_ingredients(ingredients, user_preferences, search_limit)
+    return render_template("cook.html", recipes=found_recipes)
 
 
 if __name__ == "__main__":
-    if not os.environ.get("IS_HEROKU", False):
-        APP.run(debug=DEBUG, host=HOST, port=PORT, use_reloader=True)
+    APP.run(debug=DEBUG, host=HOST, port=PORT, use_reloader=True)

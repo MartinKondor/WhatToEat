@@ -1,3 +1,6 @@
+"""
+Utilities for cook.py.
+"""
 from nltk.tokenize import word_tokenize
 
 
@@ -115,7 +118,7 @@ def is_matching_with_preference(preferences, recipe, preprocessed_recipe_ingredi
     _preprocessed_recipe_categories = [preprocess_text(category) for category in recipe["categories"]]
     
     for _pc in _preprocessed_recipe_categories:
-        if type(_pc) is list:
+        if isinstance(_pc, list):
             for _pci in _pc:
                 preprocessed_recipe_categories.append(_pci)
         else:
@@ -157,7 +160,7 @@ def check_and_process_user_input(user_input):
     :param user_input: str
     :return: False if str is not accepted else returns the processed user_input
     """
-    if type(user_input) is not str:
+    if not isinstance(user_input, str):
         return False
 
     _input = user_input.lower().strip()

@@ -1,39 +1,46 @@
+"""
+Responsible for searching and filtering recipes.
+"""
 import json
 import time
 import random
 import numpy as np
 try:
-    from src.utils import (
-        preprocess_text,
-        is_matching_with_preference
-    )
+    from src.utils import preprocess_text, is_matching_with_preference
 except ImportError:
-    from utils import (
-        preprocess_text,
-        is_matching_with_preference
-    )
+    # in case of runing from the main direcory
+    from utils import preprocess_text, is_matching_with_preference
 
 
-class Cook(object):
+class Cook:
+    """
+    :attr: self.recipes - Containing all the recipes from "data/full_format_recipes.json".
+    """
 
     def __init__(self):
-        """
-        attr:self.recipes - Containing all the recipes from "data/full_format_recipes.json".
-        """
         self.recipes = []
         with open("data/full_format_recipes.json", "r") as recipes_file:
             self.recipes = json.load(recipes_file)
 
-    def random_choice(self, preferences, search_limit):
+    def random_choice(self, preferences, n_of_recipes):
+        """
+        Choose N random recipes according to the given preferences.
+
+        :param preferences: dict with the user's preferences
+        :param n_of_recipes: int of random recipes
+        :return: list of random recipes
+        """
         found_recipes = {}
 
-        for i in range(search_limit):
+        for _ in range(n_of_recipes):
 
             while True:  # choosing random recipes until one is matching with preference
                 random_choice = random.choice(self.recipes)
 
                 try:
-                    preprocessed_ingredients = np.array([preprocess_text(_) for _ in random_choice["ingredients"]])
+                    preprocessed_ingredients = np.array([
+                        preprocess_text(_) for _ in random_choice["ingredients"]
+                    ])
                 except KeyError:
                     continue
 
@@ -43,20 +50,23 @@ class Cook(object):
 
         return found_recipes
 
-    def search_with_ingredients(self, ingredients, preferences={}, search_limit=7):
+    def search_with_ingredients(self, ingredients, preferences=None, search_limit=7):
         """
         Searching for a food from self.recipes with the given list of ingredients.
 
         ## Performance
         Data: ingredients = ['broccoli'], preferences = {'alcohol-free': true}, search_limit = 7
-        New search speed: 1.293074131011963
-        Old search speed: 1.677095890045166
+        v1.0 search speed: 1.293074131011963
+        v0.9 search speed: 1.677095890045166
 
         :param ingredients: list user input preprocessed
         :param preferences: dict with the user's preferences
         :param search_limit: int how many recipes this function needs to find before stoping
         :return: dict returns the found recipes in a dict where the title is the key.
         """
+        if not preferences:
+            preferences = {}
+
         if not ingredients:  # random choice in this case
             return self.random_choice(preferences, search_limit)
 
@@ -93,25 +103,25 @@ class Cook(object):
 
 
 if __name__ == "__main__":
-    cook = Cook()
-    start_time = time.time()
+    test_cook = Cook()
+    search_start_time = time.time()
 
-    ingredients_you_want = [
+    test_ingredients_you_want = [
         "potato",
         "parsnip",
         "broccoli"
     ]
-    preferences = {
+    test_preferences = {
         "sugar_free": True,
         "alcohol_free": True,
         "vegetarian": True,
     }
 
-    found = cook.search_with_ingredients(ingredients_you_want, preferences, search_limit=3)
+    test_found = test_cook.search_with_ingredients(test_ingredients_you_want, test_preferences, 3)
 
-    print("Search finished in:", time.time() - start_time)
+    print("Search finished in:", time.time() - search_start_time)
     print()
     print("Found recipes:")
-    
-    for recipe in found:
-        print(recipe)
+
+    for test_recipe in test_found:
+        print(test_recipe)
