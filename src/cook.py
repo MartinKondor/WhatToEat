@@ -55,9 +55,9 @@ class Cook:
         Searching for a food from self.recipes with the given list of ingredients.
 
         ## Performance
-        Data: ingredients = ['broccoli'], preferences = {'alcohol-free': true}, search_limit = 7
-        v1.0 search speed: 1.293074131011963
-        v0.9 search speed: 1.677095890045166
+        Data: ingredients = ['broccoli'], preferences = {'alcohol-free': True}, search_limit = 7
+        v1.0.0 search speed: 1.293074131011963
+        v0.9.0 search speed: 1.677095890045166
 
         :param ingredients: list user input preprocessed
         :param preferences: dict with the user's preferences
@@ -67,11 +67,11 @@ class Cook:
         if not preferences:
             preferences = {}
 
-        if not ingredients:  # random choice in this case
+        if not ingredients:  # Random choice in this case
             return self.random_choice(preferences, search_limit)
 
         found_recipes = {}
-        start_time = time.time()  # measure runtime
+        start_time = time.time()  # Measure runtime
 
         for recipe in self.recipes:
             try:
@@ -80,11 +80,12 @@ class Cook:
             except KeyError:
                 continue
 
-            # remove one ingredient if it takes more than X seconds
+            # Remove one ingredient if it takes more than X seconds
             if time.time() - start_time > 20:
+                # Try to serach with less ingredient
                 return self.search_with_ingredients(ingredients[:-1], preferences, search_limit)
 
-            # flattening matrix to one dimension
+            # Flattening matrix to one dimension
             recipe_ingredients = np.concatenate([preprocess_text(_) for _ in recipe["ingredients"]])
             is_user_ingredients_found = True
 
@@ -96,7 +97,7 @@ class Cook:
             if is_user_ingredients_found and is_matching_with_preference(preferences, recipe, recipe_ingredients):
                 found_recipes[recipe["title"]] = recipe
 
-            if len(found_recipes.keys()) >= search_limit:
+            if len(found_recipes) >= search_limit:
                 break
 
         return found_recipes
@@ -104,24 +105,18 @@ class Cook:
 
 if __name__ == "__main__":
     test_cook = Cook()
+    print('Starting to search')
+    print()
+
     search_start_time = time.time()
-
-    test_ingredients_you_want = [
-        "potato",
-        "parsnip",
-        "broccoli"
-    ]
-    test_preferences = {
-        "sugar_free": True,
-        "alcohol_free": True,
-        "vegetarian": True,
-    }
-
-    test_found = test_cook.search_with_ingredients(test_ingredients_you_want, test_preferences, 3)
+    test_found = test_cook.search_with_ingredients(ingredients=['broccoli'], preferences={'alcohol-free': True}, search_limit=7)
 
     print("Search finished in:", time.time() - search_start_time)
     print()
     print("Found recipes:")
+    print()
 
     for test_recipe in test_found:
         print(test_recipe)
+    
+    print()

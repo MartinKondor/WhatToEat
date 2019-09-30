@@ -61,7 +61,7 @@ def cook_route():
         print("user_preferences:", user_preferences)
         print()
 
-    # searching
+    # Searching
     found_recipes = COOK.search_with_ingredients(ingredients, user_preferences, search_limit)
     return render_template("cook.html", recipes=found_recipes)
 
